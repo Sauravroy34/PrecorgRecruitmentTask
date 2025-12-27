@@ -25,6 +25,11 @@ random.shuffle(all_words)
 
 task1_words = all_words[:100] 
 
+task2_words = all_words[100:]
+
+with open("Testwordsfortask2.txt","w") as f:
+    f.write("\n".join(task2_words))
+    
 print(f"Total words found: {len(all_words)}")
 print(f"Selected {len(task1_words)} words for Task 1 Classification.")
 

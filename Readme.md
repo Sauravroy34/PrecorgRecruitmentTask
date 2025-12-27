@@ -4,7 +4,7 @@ This project implements deep learning models to solve two distinct CAPTCHA chall
 
 **Notebooks**
 * **Task 1 (Classification):** [Open in Google Colab](https://colab.research.google.com/drive/1gm24zgsXfFV2YwPx_G7VM4BYjkNxdNAK?usp=sharing)
-* **Task 2 (OCR/Generation):** [Open in Kaggle](https://www.kaggle.com/code/sauravroy4245/captchaocr)
+* **Task 2 (OCR/Generation):** [Open in Kaggle](https://www.kaggle.com/code/sauravroy4245/captchaocrctc)
 
 ---
 
