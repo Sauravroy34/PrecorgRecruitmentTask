@@ -4,12 +4,8 @@ import torchvision.transforms as transforms
 from PIL import Image
 import os
 import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
 
-# ==========================================
-# 1. MODEL DEFINITION (Must match training)
-# ==========================================
+
 class Convmodule(nn.Module):
     def __init__(self):
         super().__init__()
@@ -64,7 +60,7 @@ class CRNN(nn.Module):
             bidirectional=True, 
             batch_first=True
         )
-        self.fc = nn.Linear(hidden_size * 2, num_labels + 1) # +1 for blank
+        self.fc = nn.Linear(hidden_size * 2, num_labels + 1) 
 
     def forward(self, x):
         features = self.cnn(x)  
@@ -77,18 +73,12 @@ class CRNN(nn.Module):
 class LabelEncoderDecoder():
     def __init__(self, vocab):
         self.vocab = vocab
-        # Maps char to index (1-based), 0 is reserved for CTC blank
         self.char2int = {char: i + 1 for i, char in enumerate(vocab)}
         self.int2char = {i + 1: char for i, char in enumerate(vocab)}
         self.blank_idx = 0
 
     def decode(self, preds):
-        """
-        Decodes a batch of predictions using greedy decoding (argmax).
-        preds: Tensor of shape [SeqLen, Batch, NumClasses] or [Batch, SeqLen, NumClasses]
-        """
-        # Ensure preds are softmaxed or logits, we just need argmax
-        pred_indices = torch.argmax(preds, dim=2) # [Batch, SeqLen]
+        pred_indices = torch.argmax(preds, dim=2) 
         
         decoded_strings = []
         for sequence in pred_indices:
@@ -103,44 +93,32 @@ class LabelEncoderDecoder():
             decoded_strings.append("".join(decoded_chars))
         return decoded_strings
 
-# ==========================================
-# 2. CONFIGURATION & LOADING
-# ==========================================
 
-# Define Vocabulary (MUST match training exactly)
+#Got this from notebook
 VOCAB = "01289ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-# Or if you trained only on letters as per your generation code:
-# VOCAB = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" 
 
-MODEL_PATH = "/home/saurav/Desktop/PrecorgTask/models/Task2Genration.pth"
-DATASET_ROOT = "test_dataset"  # Pointing to the folder created by your gen script
+MODEL_PATH = "/home/saurav/Desktop/PrecorgTask/models/Task2Genration.pth" #model path
+DATASET_ROOT = "test_dataset"  #test dataset 
 
-# Initialize Model
 model = CRNN(len(VOCAB), 256)
 weights = torch.load(MODEL_PATH, map_location=torch.device('cpu'))
 model.load_state_dict(weights)
 
-# Load Weights
 
 
 model.eval()
 encoder = LabelEncoderDecoder(VOCAB)
 
-# Transform (Resize to 32x128 as standard for CRNN)
 transform = transforms.Compose([
     transforms.Resize((32, 128)),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ])
 
-# ==========================================
-# 3. PREDICTION & PLOTTING LOOP
-# ==========================================
+
 
 subsets = ["easy", "hard", "bonus"]
 
-# Set up the plot: 3 rows (subsets), X columns (images)
-# We will just plot all images found (assuming ~10 per class as stated)
 fig = plt.figure(figsize=(20, 10))
 plt.subplots_adjust(hspace=0.6, wspace=0.3)
 
@@ -150,25 +128,17 @@ for row_idx, subset in enumerate(subsets):
     subset_path = os.path.join(DATASET_ROOT, subset)
     csv_path = os.path.join(subset_path, "labels.csv")
     
-    if not os.path.exists(csv_path):
-        print(f"Skipping {subset}: No labels.csv found.")
-        continue
         
-    # Read the CSV (Format: filename,label,subset_type)
-    # The generation script writes plain text lines like: easy_0_Cat.png,cat,easy
-    try:
-        # Manually reading to handle potential CSV header issues
-        with open(csv_path, 'r') as f:
-            lines = f.readlines()
+    #each subset has its own label.csv file
+    with open(csv_path, 'r') as f:
+        lines = f.readlines()
         
-        data_pairs = []
-        for line in lines:
-            parts = line.strip().split(',')
-            if len(parts) >= 2:
-                data_pairs.append((parts[0], parts[1])) # (filename, label)
-    except Exception as e:
-        print(f"Error reading {csv_path}: {e}")
-        continue
+    data_pairs = []
+    for line in lines:
+        parts = line.strip().split(',')
+        if len(parts) >= 2:
+            data_pairs.append((parts[0], parts[1])) # (filename, label)
+ 
         
     print(f"\nProcessing {subset.upper()} set ({len(data_pairs)} images)...")
 
@@ -178,33 +148,31 @@ for row_idx, subset in enumerate(subsets):
     for i, (filename, true_label) in enumerate(data_pairs):
         img_path = os.path.join(subset_path, filename)
         
-        try:
+
             # 1. Load and Preprocess Image
-            image = Image.open(img_path).convert("RGB")
-            img_tensor = transform(image).unsqueeze(0) # [1, 3, 32, 128]
+        image = Image.open(img_path).convert("RGB")
+        img_tensor = transform(image).unsqueeze(0) # [1, 3, 32, 128] adds batch dimension
             
             # 2. Inference
-            with torch.no_grad():
-                preds = model(img_tensor) # [1, SeqLen, NumClasses]
+        with torch.no_grad():
+            preds = model(img_tensor) # [1, SeqLen, NumClasses]
             
             # 3. Decode
-            predicted_text = encoder.decode(preds)[0]
+        predicted_text = encoder.decode(preds)[0]
             
             # 4. Plotting
-            ax = plt.subplot(3, 10, plot_idx)
-            ax.imshow(image)
+        ax = plt.subplot(3, 10, plot_idx)
+        ax.imshow(image)
             
-            # Color logic: Green if correct, Red if wrong
-            text_color = 'green' if predicted_text == true_label else 'red'
+        #Green if correct, Red if wrong
+        text_color = 'green' if predicted_text == true_label else 'red'
             
-            title_text = f"Pred: {predicted_text}\nTrue: {true_label}"
-            ax.set_title(title_text, color=text_color, fontsize=9)
-            ax.axis('off')
+        title_text = f"Pred: {predicted_text}\nTrue: {true_label}"
+        ax.set_title(title_text, color=text_color, fontsize=9)
+        ax.axis('off')
             
-            plot_idx += 1
-            
-        except Exception as e:
-            print(f"Failed to process {filename}: {e}")
+        plot_idx += 1
+
 
 plt.suptitle("Model Predictions on Test Dataset (Green=Correct, Red=Wrong)", fontsize=16)
 plt.show()

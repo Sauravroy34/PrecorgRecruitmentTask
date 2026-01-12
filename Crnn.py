@@ -68,7 +68,7 @@ class CRNN(nn.Module):
         )
         
 
-        self.fc = nn.Linear(hidden_size * 2, num_labels + 1) #numlables +1 for blank tokens
+        self.fc = nn.Linear(hidden_size * 2, num_labels + 1) 
 
     def forward(self, x):
         features = self.cnn(x)  

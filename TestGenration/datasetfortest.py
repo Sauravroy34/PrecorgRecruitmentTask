@@ -159,9 +159,8 @@ if red_words_input:
 with open(f"{OUTPUT_DIR}/bonus/labels.csv", "w") as f:
     f.write("\n".join(labels_bonus))
 
-try:
-    shutil.rmtree(ASSETS_DIR)
-except:
-    pass
+
+shutil.rmtree(ASSETS_DIR)
+
 
 print("Done! Task 1 Dataset (Classification) generated in 'dataset_task1'.")
