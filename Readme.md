@@ -75,7 +75,7 @@ see `datasetGenration/GenrateDataset.py` for more details
 
 <img width="511" height="531" alt="Screenshot from 2025-12-25 22-17-59" src="https://github.com/user-attachments/assets/8f364eb9-b7de-46db-8505-b4e004e1e364" />
 
-# Refrence
+# Reference
 
 1) [An End-to-End Trainable Neural Network for Image-based Sequence Recognition and Its Application to Scene Text Recognition](https://arxiv.org/abs/1507.05717)
    
