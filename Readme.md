@@ -1,4 +1,4 @@
-# Can you break the captch
+# Can you break the captcha
 
 This project implements deep learning models to solve two distinct CAPTCHA challenges: Word Classification and Optical Character Recognition (OCR).
 
