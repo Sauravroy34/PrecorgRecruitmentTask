@@ -28,7 +28,19 @@ A custom Deep CNN architecture was designed for the classification task.
 For the first iteration, a total of 15,000 samples were generated (5,000 per difficulty category: Easy, Hard, and Bonus).
 * **Bonus Set Handling:** To ensure balanced training, the split strategy explicitly handled the "Green" and "Red" subsets within the Bonus category. Both the training and validation splits contain an equal representation of Green and Red images to prevent bias.
 
+<img width="1317" height="548" alt="split" src="https://github.com/user-attachments/assets/4906d9c4-b37c-4d79-9945-019489c9651c" />
+
+
 ---
+### Results (task 1)
+<img width="1639" height="665" alt="juicy" src="https://github.com/user-attachments/assets/ec1fb8ed-198d-4572-bb5a-73c37cba05f9" />
+
+<img width="1345" height="528" alt="Screenshot from 2025-12-24 04-00-44" src="https://github.com/user-attachments/assets/34543a84-ae66-44da-b74c-1d611ac16e90" />
+
+<img width="1338" height="543" alt="A 25pecet" src="https://github.com/user-attachments/assets/a159afb7-8162-4ede-b3f7-07d68213055d" />
+
+
+
 
 ## Task 2: OCR and Text Generation
 
@@ -49,3 +61,15 @@ The same balanced splitting strategy from Task 1 was applied here to ensure fair
 ### Words list
 [dwyl/english-words](https://github.com/dwyl/english-words) was used with word length > 3 and special character filtered 
 see `datasetGenration/GenrateDataset.py` for more details
+### Results (task 2)
+
+<img width="1920" height="971" alt="Results" src="https://github.com/user-attachments/assets/f49b6a3e-8152-4fae-bdd7-cea28f902744" />
+
+
+# Dataset 
+<img width="1048" height="662" alt="Screenshot from 2025-12-24 00-59-56" src="https://github.com/user-attachments/assets/caf7673c-a8fe-433d-9524-b0aa444a44dc" />
+
+# Model 
+
+<img width="511" height="531" alt="Screenshot from 2025-12-25 22-17-59" src="https://github.com/user-attachments/assets/8f364eb9-b7de-46db-8505-b4e004e1e364" />
+
