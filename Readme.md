@@ -64,8 +64,9 @@ see `datasetGenration/GenrateDataset.py` for more details
 ### Results (task 2)
 
 <img width="1920" height="971" alt="Results" src="https://github.com/user-attachments/assets/f49b6a3e-8152-4fae-bdd7-cea28f902744" />
+<img width="1275" height="510" alt="patience" src="https://github.com/user-attachments/assets/35d3e6f5-6151-4afa-92aa-c5f33c282446" />
 
-<img width="1275" height="510" alt="patience" src="https://github.com/user-attachments/assets/152e6fa3-b931-497f-ac0e-94f90806bd5f" />
+
 
 
 # Dataset 
